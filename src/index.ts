@@ -1,28 +1,41 @@
-import { pipe } from 'fp-ts/function';
-import * as O from 'fp-ts/Option';
-import { sequenceS } from 'fp-ts/lib/Apply';
+type Answer = 'left' | 'right' | 'waiting-for-answer';
 
-let prompt;
-let left;
-let right;
-let result;
+type State = {
+  prompt: HTMLElement
+  left: HTMLElement
+  right: HTMLElement
+  result: HTMLElement
+  answer: Answer
+}
 
 const init = () => {
-  prompt = document.getElementById('prompt') as HTMLElement;
-  left = document.getElementById('left') as HTMLElement;
-  right = document.getElementById('right') as HTMLElement;
-  result = document.getElementById('result') as HTMLElement;
+  const state: State = {
+    prompt: document.getElementById('prompt') as HTMLElement,
+    left: document.getElementById('left') as HTMLElement,
+    right: document.getElementById('right') as HTMLElement,
+    result: document.getElementById('result') as HTMLElement,
 
-  left.addEventListener('click', displayReward(result));
+    answer: 'waiting-for-answer',
+  };
 
-  window.requestAnimationFrame(mainLoop);
+  state.left.addEventListener('click', () => {
+    if (state.answer === 'waiting-for-answer') {
+      state.answer = 'left';
+    }
+  });
+
+  window.requestAnimationFrame(mainLoop(state));
 };
 
-const mainLoop = () => {
-  window.requestAnimationFrame(mainLoop);
+const mainLoop = (state: State) => () => {
+  if (state.answer === 'left') {
+    displayReward(state.result);
+  }
+
+  window.requestAnimationFrame(mainLoop(state));
 };
 
-const displayReward = (result: HTMLElement) => () => {
+const displayReward = (result: HTMLElement) => {
   result.innerHTML = `
     <img src="https://www.akc.org/wp-content/uploads/2018/03/Two-Newfoundland-puppies-running-outside-header.jpg" alt="">
   `;
