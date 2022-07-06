@@ -59,7 +59,7 @@ const getReady = (state: State, secondsSincePhaseChange: number): State => {
   return state;
 };
 
-const promptController = (state: State): State => {
+const promptController = (state: State, secondsSincePhaseChange: number): State => {
   if (state.answer === state.prompt.innerText) {
     displayReward(state.result);
     state.phase = 'result';
@@ -69,6 +69,14 @@ const promptController = (state: State): State => {
     state.result.innerHTML = `
       <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
     `;
+    state.phase = 'result';
+  }
+
+  if (secondsSincePhaseChange > 3) {
+    state.result.innerHTML = `
+      <img src="https://media.giphy.com/media/znqw31I9dBDI4QJtxP/giphy.gif" alt="">
+    `;
+
     state.phase = 'result';
   }
 
@@ -93,7 +101,7 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
       state = getReady(state, secondsSincePhaseChange);
       break;
     case 'prompt':
-      state = promptController(state);
+      state = promptController(state, secondsSincePhaseChange);
       break;
     case 'result':
       state = resultController(state, secondsSincePhaseChange);
