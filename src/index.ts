@@ -5,7 +5,7 @@ type State = {
   left: HTMLElement;
   right: HTMLElement;
   result: HTMLElement;
-  phase: 'get-ready' | 'prompt';
+  phase: 'get-ready' | 'prompt' | 'result';
   phaseChangeTimestamp: number;
   answer: Answer;
 };
@@ -62,14 +62,25 @@ const getReady = (state: State, secondsSincePhaseChange: number): State => {
 const promptController = (state: State): State => {
   if (state.answer === state.prompt.innerText) {
     displayReward(state.result);
+    state.phase = 'result';
   }
 
   if (state.answer !== state.prompt.innerText && state.answer !== 'waiting-for-answer') {
     state.result.innerHTML = `
       <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
     `;
+    state.phase = 'result';
   }
 
+  return state;
+};
+
+const resultController = (state: State, secondsSincePhaseChange: number): State => {
+  if (secondsSincePhaseChange > 5) {
+    state.result.innerHTML = '';
+    state.phase = 'get-ready';
+    state.answer = 'waiting-for-answer';
+  }
   return state;
 };
 
@@ -83,6 +94,9 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
       break;
     case 'prompt':
       state = promptController(state);
+      break;
+    case 'result':
+      state = resultController(state, secondsSincePhaseChange);
       break;
   }
 
