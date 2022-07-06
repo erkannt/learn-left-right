@@ -34,18 +34,18 @@ const init = () => {
 };
 
 const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
-  const secondsSincePhaseChange = (timestamp - state.phaseChangeTimestamp) / 1000
+  const secondsSincePhaseChange = (timestamp - state.phaseChangeTimestamp) / 1000;
 
   if (secondsSincePhaseChange < 2) {
-    state.prompt.innerText = 'Get ready!'
+    state.prompt.innerText = 'Get ready!';
   }
 
   if (secondsSincePhaseChange >= 2) {
-    state.prompt.innerText = Math.ceil(7 - secondsSincePhaseChange).toString()
+    state.prompt.innerText = Math.ceil(7 - secondsSincePhaseChange).toString();
   }
 
   if (secondsSincePhaseChange >= 7) {
-    state.prompt.innerText = 'LEFT'
+    state.prompt.innerText = 'LEFT';
   }
 
   if (state.answer === 'left') {

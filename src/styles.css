@@ -364,13 +364,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-
 /* PROJECT SPECIFIC STYLES */
 
 body {
   display: grid;
-  grid-template-areas: "left prompt right"
-                       "left result right";
+  grid-template-areas:
+    'left prompt right'
+    'left result right';
   grid-template-rows: auto 1fr;
   grid-template-columns: 30vw 1fr 30vw;
   height: 100vh;
