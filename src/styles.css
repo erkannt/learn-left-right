@@ -368,6 +368,7 @@ body {
   grid-template-rows: auto 1fr;
   grid-template-columns: 30vw 1fr 30vw;
   height: 100vh;
+  gap: 1rem;
 }
 
 .prompt {
@@ -395,7 +396,6 @@ body {
 
 .result > img {
   margin: 0;
-  padding: 1rem;
   max-width: 100%;
   max-height: 100%;
 }
