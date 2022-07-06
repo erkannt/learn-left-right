@@ -5,7 +5,7 @@ type State = {
   left: HTMLElement;
   right: HTMLElement;
   result: HTMLElement;
-  phase: 'get-ready';
+  phase: 'get-ready' | 'prompt';
   phaseChangeTimestamp: number;
   answer: Answer;
 };
@@ -25,7 +25,7 @@ const init = () => {
   state.prompt.innerText = 'Get ready!';
 
   state.left.addEventListener('click', () => {
-    if (state.answer === 'waiting-for-answer') {
+    if (state.answer === 'waiting-for-answer' && state.phase === 'prompt') {
       state.answer = 'left';
     }
   });
@@ -36,20 +36,25 @@ const init = () => {
 const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
   const secondsSincePhaseChange = (timestamp - state.phaseChangeTimestamp) / 1000;
 
-  if (secondsSincePhaseChange < 2) {
-    state.prompt.innerText = 'Get ready!';
-  }
+  switch (state.phase) {
+    case 'get-ready':
+      if (secondsSincePhaseChange < 2) {
+        state.prompt.innerText = 'Get ready!';
+      }
 
-  if (secondsSincePhaseChange >= 2) {
-    state.prompt.innerText = Math.ceil(7 - secondsSincePhaseChange).toString();
-  }
+      if (secondsSincePhaseChange >= 2) {
+        state.prompt.innerText = Math.ceil(7 - secondsSincePhaseChange).toString();
+      }
 
-  if (secondsSincePhaseChange >= 7) {
-    state.prompt.innerText = 'LEFT';
-  }
-
-  if (state.answer === 'left') {
-    displayReward(state.result);
+      if (secondsSincePhaseChange >= 7) {
+        state.prompt.innerText = 'LEFT';
+        state.phase = 'prompt';
+        state.phaseChangeTimestamp = timestamp;
+      }
+    case 'prompt':
+      if (state.answer === 'left') {
+        displayReward(state.result);
+      }
   }
 
   window.requestAnimationFrame(mainLoop(state));
