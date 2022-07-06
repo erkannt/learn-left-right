@@ -41,7 +41,8 @@ const init = () => {
 
 const getReady = (state: State, secondsSincePhaseChange: number): State => {
   if (secondsSincePhaseChange >= 5) {
-    state.prompt.innerText = 'LEFT';
+    const prompts = ['LEFT', 'RIGHT'];
+    state.prompt.innerText = prompts[Math.floor(Math.random() * prompts.length)];
     state.phase = 'prompt';
     return state;
   }
