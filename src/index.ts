@@ -43,10 +43,10 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
       }
 
       if (secondsSincePhaseChange >= 2) {
-        state.prompt.innerText = Math.ceil(7 - secondsSincePhaseChange).toString();
+        state.prompt.innerText = Math.ceil(5 - secondsSincePhaseChange).toString();
       }
 
-      if (secondsSincePhaseChange >= 7) {
+      if (secondsSincePhaseChange >= 5) {
         state.prompt.innerText = 'LEFT';
         state.phase = 'prompt';
         state.phaseChangeTimestamp = timestamp;
