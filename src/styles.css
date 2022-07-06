@@ -393,4 +393,12 @@ body {
 
 .result {
   grid-area: result;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result > img {
+  max-width: 80%;
+  max-height: 80%;
 }

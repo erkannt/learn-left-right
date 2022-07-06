@@ -1,4 +1,4 @@
-type Answer = 'left' | 'right' | 'waiting-for-answer';
+type Answer = 'LEFT' | 'RIGHT' | 'waiting-for-answer';
 
 type State = {
   prompt: HTMLElement;
@@ -26,7 +26,13 @@ const init = () => {
 
   state.left.addEventListener('click', () => {
     if (state.answer === 'waiting-for-answer' && state.phase === 'prompt') {
-      state.answer = 'left';
+      state.answer = 'LEFT';
+    }
+  });
+
+  state.right.addEventListener('click', () => {
+    if (state.answer === 'waiting-for-answer' && state.phase === 'prompt') {
+      state.answer = 'RIGHT';
     }
   });
 
@@ -52,8 +58,14 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
         state.phaseChangeTimestamp = timestamp;
       }
     case 'prompt':
-      if (state.answer === 'left') {
+      if (state.answer === state.prompt.innerText) {
         displayReward(state.result);
+      }
+
+      if (state.answer !== state.prompt.innerText && state.answer !== 'waiting-for-answer') {
+        state.result.innerHTML = `
+          <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
+        `;
       }
   }
 
