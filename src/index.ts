@@ -5,7 +5,7 @@ type State = {
   left: HTMLElement;
   right: HTMLElement;
   result: HTMLElement;
-  phase: 'get-ready' | 'prompt' | 'result';
+  phase: 'get-ready' | 'prompt' | 'result' | 'debug';
   phaseChangeTimestamp: number;
   answer: Answer;
 };
@@ -117,8 +117,19 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
 };
 
 const displayReward = (result: HTMLElement) => {
+  const puppies = [
+    'https://media.giphy.com/media/ZFFVNwIbjsKtP3lHYK/giphy.gif',
+    'https://media.giphy.com/media/Y4pAQv58ETJgRwoLxj/giphy.gif',
+    'https://media.giphy.com/media/xwMxmx6cTsElW/giphy.gif',
+    'https://media.giphy.com/media/gZLl9szOpgbpS/giphy.gif',
+    'https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif',
+    'https://media.giphy.com/media/jsMoSSozkPUBWodejV/giphy.gif',
+    'https://media.giphy.com/media/eeLD68y0yAzl12KUDH/giphy.gif',
+    'https://media.giphy.com/media/5sHg1xQjMV8iI/giphy.gif',
+    'https://media.giphy.com/media/gVYk3rI8YjtAI/giphy.gif',
+  ];
   result.innerHTML = `
-    <img src="https://media.giphy.com/media/ZFFVNwIbjsKtP3lHYK/giphy.gif" alt="">
+    <img src="${puppies[Math.floor(Math.random() * puppies.length)]}" alt="">
   `;
 };
 
