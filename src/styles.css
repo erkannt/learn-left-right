@@ -119,20 +119,6 @@ h2,
 h3,
 h4,
 h5,
-h6,
-p,
-blockquote,
-dl,
-img,
-figure {
-  margin: 2rem 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
 h6 {
   font-weight: bold;
   line-height: 1.2;
@@ -365,15 +351,17 @@ body {
   grid-template-areas:
     'left prompt right'
     'left result right';
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 20vh 80vh;
   grid-template-columns: 30vw 1fr 30vw;
   height: 100vh;
-  gap: 1rem;
+  column-gap: 1rem;
+  overflow: hidden;
 }
 
 .prompt {
   grid-area: prompt;
   text-align: center;
+  margin: auto;
 }
 
 .left {
