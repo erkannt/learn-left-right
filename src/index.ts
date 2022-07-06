@@ -59,6 +59,20 @@ const getReady = (state: State, secondsSincePhaseChange: number): State => {
   return state;
 };
 
+const promptController = (state: State): State => {
+  if (state.answer === state.prompt.innerText) {
+    displayReward(state.result);
+  }
+
+  if (state.answer !== state.prompt.innerText && state.answer !== 'waiting-for-answer') {
+    state.result.innerHTML = `
+      <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
+    `;
+  }
+
+  return state;
+};
+
 const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
   const secondsSincePhaseChange = (timestamp - state.phaseChangeTimestamp) / 1000;
   const oldPhase = state.phase;
@@ -66,16 +80,10 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
   switch (state.phase) {
     case 'get-ready':
       state = getReady(state, secondsSincePhaseChange);
+      break;
     case 'prompt':
-      if (state.answer === state.prompt.innerText) {
-        displayReward(state.result);
-      }
-
-      if (state.answer !== state.prompt.innerText && state.answer !== 'waiting-for-answer') {
-        state.result.innerHTML = `
-          <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
-        `;
-      }
+      state = promptController(state);
+      break;
   }
 
   if (oldPhase !== state.phase) {
