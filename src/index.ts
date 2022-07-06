@@ -39,24 +39,33 @@ const init = () => {
   window.requestAnimationFrame(mainLoop(state));
 };
 
+const getReady = (state: State, secondsSincePhaseChange: number): State => {
+  if (secondsSincePhaseChange >= 5) {
+    state.prompt.innerText = 'LEFT';
+    state.phase = 'prompt';
+    return state;
+  }
+
+  if (secondsSincePhaseChange >= 2) {
+    state.prompt.innerText = Math.ceil(5 - secondsSincePhaseChange).toString();
+    return state;
+  }
+
+  if (secondsSincePhaseChange < 2) {
+    state.prompt.innerText = 'Get ready!';
+    return state;
+  }
+
+  return state;
+};
+
 const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
   const secondsSincePhaseChange = (timestamp - state.phaseChangeTimestamp) / 1000;
+  const oldPhase = state.phase;
 
   switch (state.phase) {
     case 'get-ready':
-      if (secondsSincePhaseChange < 2) {
-        state.prompt.innerText = 'Get ready!';
-      }
-
-      if (secondsSincePhaseChange >= 2) {
-        state.prompt.innerText = Math.ceil(5 - secondsSincePhaseChange).toString();
-      }
-
-      if (secondsSincePhaseChange >= 5) {
-        state.prompt.innerText = 'LEFT';
-        state.phase = 'prompt';
-        state.phaseChangeTimestamp = timestamp;
-      }
+      state = getReady(state, secondsSincePhaseChange);
     case 'prompt':
       if (state.answer === state.prompt.innerText) {
         displayReward(state.result);
@@ -67,6 +76,10 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
           <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="">
         `;
       }
+  }
+
+  if (oldPhase !== state.phase) {
+    state.phaseChangeTimestamp = timestamp;
   }
 
   window.requestAnimationFrame(mainLoop(state));
