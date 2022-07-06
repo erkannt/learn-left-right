@@ -118,7 +118,7 @@ const mainLoop = (state: State) => (timestamp: DOMHighResTimeStamp) => {
 
 const displayReward = (result: HTMLElement) => {
   result.innerHTML = `
-    <img src="https://www.akc.org/wp-content/uploads/2018/03/Two-Newfoundland-puppies-running-outside-header.jpg" alt="">
+    <img src="https://media.giphy.com/media/ZFFVNwIbjsKtP3lHYK/giphy.gif" alt="">
   `;
 };
 
