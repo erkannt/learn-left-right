@@ -369,14 +369,15 @@ SOFTWARE. */
 
 body {
   display: grid;
-  grid-template-areas: "left main right";
-  grid-template-rows: 1fr;
+  grid-template-areas: "left prompt right"
+                       "left result right";
+  grid-template-rows: auto 1fr;
   grid-template-columns: 30vw 1fr 30vw;
   height: 100vh;
 }
 
 .prompt {
-  grid-area: main;
+  grid-area: prompt;
   text-align: center;
 }
 
@@ -391,5 +392,5 @@ body {
 }
 
 .result {
-  grid-area: main;
+  grid-area: result;
 }
